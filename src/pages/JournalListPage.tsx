@@ -16,6 +16,9 @@ interface JournalEntry {
   profiles: { username: string | null } | null;
 }
 
+// Define a type for the joined data based on the Supabase query
+type JournalWithProfile = Database['public']['Tables']['journals']['Row'] & { profiles: { username: string | null } | null };
+
 const JournalListPage = () => {
   const [journals, setJournals] = useState<JournalEntry[]>([]);
   const [loading, setLoading] = useState(true);
@@ -27,7 +30,7 @@ const JournalListPage = () => {
       // Fetch journals from the 'journals' table and the author's username from the 'profiles' table
       const { data, error } = await supabase
         .from('journals')
-        .select('*')
+        .select('*, profiles(username)')
         .order('created_at', { ascending: false });
 
       if (error) {
@@ -35,7 +38,8 @@ const JournalListPage = () => {
       }
 
       if (data) {
-        setJournals(data);
+        // Cast the fetched data to the defined joined type
+        setJournals(data as JournalWithProfile[] as JournalEntry[]);
       }
     } catch (error) {
       console.error('Error fetching journals:', error);
@@ -55,8 +59,6 @@ const JournalListPage = () => {
 
   return (
     <div className="min-h-screen bg-alpaca-dark flex flex-col">
-      <Navbar />
-
       <main className="flex-1 container mx-auto px-4 pt-20 pb-16 flex flex-col">
         <div className="mb-6">
           <h1 className="text-3xl font-bold mb-2">Trading Journals</h1>
@@ -87,8 +89,6 @@ const JournalListPage = () => {
           )}
         </div>
       </main>
-
-      <Footer />
     </div>
   );
 };

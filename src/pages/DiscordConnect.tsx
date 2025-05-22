@@ -1,6 +1,3 @@
-
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/components/ui/use-toast";
@@ -17,8 +14,6 @@ const DiscordConnect = () => {
 
   return (
     <div className="min-h-screen bg-alpaca-dark">
-      <Navbar />
-      
       <main className="container mx-auto px-4 pt-24 pb-16">
         <div className="mb-8">
           <h1 className="text-3xl font-bold mb-2">Discord Integration</h1>
@@ -76,8 +71,6 @@ const DiscordConnect = () => {
           </Card>
         </div>
       </main>
-      
-      <Footer />
     </div>
   );
 };

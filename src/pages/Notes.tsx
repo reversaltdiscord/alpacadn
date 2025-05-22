@@ -1,5 +1,4 @@
 import { useEffect, useState, useCallback } from "react";
-import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import NoteCard from "@/components/NoteCard";
 import UploadNoteForm from "@/components/UploadNoteForm";
@@ -71,8 +70,6 @@ const Notes = () => {
 
   return (
     <div className="min-h-screen bg-alpaca-dark">
-      <Navbar />
-      
       <main className="container mx-auto px-4 pt-24 pb-16">
         <div className="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">
           <div>
@@ -122,8 +119,6 @@ const Notes = () => {
           </div>
         )}
       </main>
-      
-      <Footer />
     </div>
   );
 };

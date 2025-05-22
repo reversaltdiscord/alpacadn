@@ -1,8 +1,5 @@
-
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
 import { useToast } from "@/components/ui/use-toast";
 
 const Dashboard = () => {
@@ -17,8 +14,6 @@ const Dashboard = () => {
 
   return (
     <div className="min-h-screen bg-alpaca-dark">
-      <Navbar />
-      
       <main className="container mx-auto px-4 pt-24 pb-16">
         <div className="mb-8">
           <h1 className="text-3xl font-bold mb-2">Welcome to AlpacaDN</h1>
@@ -111,8 +106,6 @@ const Dashboard = () => {
           </TabsContent>
         </Tabs>
       </main>
-      
-      <Footer />
     </div>
   );
 };

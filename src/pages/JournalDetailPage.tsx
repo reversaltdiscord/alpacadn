@@ -1,12 +1,11 @@
 import { useEffect, useState, useCallback } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/components/ui/use-toast";
 import CommentSection from "@/components/CommentSection";
 import { useAuth } from "../contexts/AuthContext";
 import JournalEntryForm from '../components/JournalEntryForm';
+import { Database } from '@/integrations/supabase/types';
 
 interface JournalEntry {
   id: string;
@@ -17,6 +16,9 @@ interface JournalEntry {
   updated_at: string;
   profiles: { username: string | null } | null;
 }
+
+// Define a type for the joined data based on the Supabase query
+type JournalWithProfile = Database['public']['Tables']['journals']['Row'] & { profiles: { username: string | null } | null };
 
 const JournalDetailPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -34,7 +36,7 @@ const JournalDetailPage = () => {
       // Fetch the specific journal entry and the author's username
       const { data, error } = await supabase
         .from('journals')
-        .select('*')
+        .select('*, profiles(username)') // Modified select statement to include profiles username
         .eq('id', id)
         .single(); // Use single() to get a single row
 
@@ -43,7 +45,8 @@ const JournalDetailPage = () => {
       }
 
       if (data) {
-        setJournal(data);
+        // Cast the fetched data to the defined joined type
+        setJournal(data as unknown as JournalWithProfile); // Cast to JournalWithProfile
       } else {
         setError('Journal entry not found.');
       }
@@ -100,8 +103,6 @@ const JournalDetailPage = () => {
 
   return (
     <div className="min-h-screen bg-alpaca-dark flex flex-col">
-      <Navbar />
-
       <main className="flex-1 container mx-auto px-4 pt-20 pb-16 flex flex-col">
         {isEditing ? (
           <JournalEntryForm
@@ -139,12 +140,10 @@ const JournalDetailPage = () => {
             )}
 
             {/* CommentSection will be added here later */}
-            <CommentSection journalId={journal.id} />
+            <CommentSection parentId={journal.id} parentType="journal" />
           </>
         )}
       </main>
-
-      <Footer />
     </div>
   );
 };

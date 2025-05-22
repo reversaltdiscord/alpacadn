@@ -258,12 +258,14 @@ ALTER TABLE ONLY "public"."comments"
 
 
 ALTER TABLE ONLY "public"."journals"
-    ADD CONSTRAINT "fk_user" FOREIGN KEY ("user_id") REFERENCES "auth"."users"("id") ON DELETE CASCADE;
-
-
+    DROP CONSTRAINT IF EXISTS "journals_user_id_fkey";
 
 ALTER TABLE ONLY "public"."journals"
-    ADD CONSTRAINT "journals_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "auth"."users"("id") ON DELETE CASCADE;
+    DROP CONSTRAINT IF EXISTS "fk_user";
+
+-- Add the correct foreign key constraint for journals table referencing profiles
+ALTER TABLE ONLY "public"."journals"
+    ADD CONSTRAINT "journals_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "public"."profiles"("id") ON DELETE CASCADE;
 
 
 
